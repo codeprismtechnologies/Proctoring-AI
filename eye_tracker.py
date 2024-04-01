@@ -154,9 +154,9 @@ landmark_model = get_landmark_model()
 left = [36, 37, 38, 39, 40, 41]
 right = [42, 43, 44, 45, 46, 47]
 
-cap = cv2.VideoCapture(0)
-ret, img = cap.read()
-thresh = img.copy()
+# cap = cv2.VideoCapture(0)
+# ret, img = cap.read()
+# thresh = img.copy()
 
 cv2.namedWindow('image')
 kernel = np.ones((9, 9), np.uint8)
@@ -165,12 +165,13 @@ def nothing(x):
     pass
 cv2.createTrackbar('threshold', 'image', 75, 255, nothing)
 
-while(True):
-    ret, img = cap.read()
-    rects = find_faces(img, face_model)
+# while(True):
+#     ret, img = cap.read()
+#     rects = find_faces(img, face_model)
     
-    for rect in rects:
-        shape = detect_marks(img, landmark_model, rect)
+#     for rect in rects:
+#         shape = detect_marks(img, landmark_model, rect)
+def track_eye(img, shape):
         mask = np.zeros(img.shape[:2], dtype=np.uint8)
         mask, end_points_left = eye_on_mask(mask, left, shape)
         mask, end_points_right = eye_on_mask(mask, right, shape)
@@ -191,10 +192,10 @@ while(True):
         # for (x, y) in shape[36:48]:
         #     cv2.circle(img, (x, y), 2, (255, 0, 0), -1)
         
-    cv2.imshow('eyes', img)
-    cv2.imshow("image", thresh)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+#     cv2.imshow('eyes', img)
+#     cv2.imshow("image", thresh)
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
     
-cap.release()
-cv2.destroyAllWindows()
+# cap.release()
+# cv2.destroyAllWindows()

@@ -324,13 +324,14 @@ def weights_download(out='models/yolov3.weights'):
 yolo = YoloV3()
 load_darknet_weights(yolo, 'models/yolov3.weights') 
 
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 
 
-while(True):
-    ret, image = cap.read()
-    if ret == False:
-        break
+# while(True):
+#     ret, image = cap.read()
+#     if ret == False:
+#         break
+def detect_person_and_phone(image):
     img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (320, 320))
     img = img.astype(np.float32)
@@ -351,11 +352,11 @@ while(True):
         
     image = draw_outputs(image, (boxes, scores, classes, nums), class_names)
 
-    cv2.imshow('Prediction', image)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+#     cv2.imshow('Prediction', image)
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
 
 
-cap.release()
-cv2.destroyAllWindows()
+# cap.release()
+# cv2.destroyAllWindows()
 
