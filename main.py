@@ -1,23 +1,21 @@
-from flask import Flask, render_template, Response
-from camera import VideoCamera
+from fastapi import FastAPI, APIRouter
 
-app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template("index.html")
+from eye_tracker import track_eye
+from head_pose_estimation import detect_head_pose
+from mouth_opening_detector import mouth_opening_detector
+from person_and_phone import detect_phone_and_person
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield(b'--frame \r\n'
-              b'Content-Type: image/jpeg\r\n\r\n' + frame
-             + b'\r\n\r\n')
-        
-@app.route('/video_feed')
-def video_feed():
-        return Response(gen(VideoCamera()),
-                        mimetype='multipart/x-mixed-replace; boundary=frame')
-    
-if __name__ == '__main__':
-    app.run(host = "0.0.0.0", port = "5005", debug=True)
+
+app = FastAPI()
+
+
+@app.post("/analyze_video")
+def read_root(video_url: str=None):
+    track_eye(video_url)
+    detect_head_pose(video_url)
+    mouth_opening_detector(video_url)
+    detect_phone_and_person(video_url)
+
+
+    return {"message": "Success"}
